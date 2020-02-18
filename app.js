@@ -7,7 +7,7 @@ const axios = require('axios');
  * 
  * Returns: joints array
  */
-async function parseResponse(res) {
+async function getJointValuesFromResponse(res) {
     //                   Joint 0...9,   Any number of digits . any number of ditis. Global flag
     let re = new RegExp('Joint +[0-9]: +(-*[0-9]+\.[0-9]+)', 'g')
     let joints = [];
@@ -28,15 +28,15 @@ async function parseResponse(res) {
  * Prints joints values with timestamps to log.
  */
 const main_loop = () => {
-    const startTimeStamp = new Date();
     setTimeout(() => {
-        
+        const startTimeStamp = new Date();
+        let timeDelta = startTimeStamp;
         axios.get('https://fanuc-robot-http-server.herokuapp.com/')
             .then((res) => {
-                return parseResponse(res);
+                timeDelta = Date.now() - startTimeStamp;
+                return getJointValuesFromResponse(res);
             })
             .then((jointValueArray) => {
-                const timeDelta = Date.now() - startTimeStamp;
                 console.log(startTimeStamp, jointValueArray, timeDelta, 'ms');
             });
         main_loop();
