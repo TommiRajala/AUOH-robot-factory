@@ -1,4 +1,6 @@
 const axios = require('axios');
+const mqtt = require('mqtt');
+const mqtt_client = mqtt.connect('wss://auoh-mqtt-test.herokuapp.com');
 
 /**
  * Regular expression match function to
@@ -38,8 +40,22 @@ const main_loop = () => {
             })
             .then((jointValueArray) => {
                 console.log(startTimeStamp, jointValueArray, timeDelta, 'ms');
+                let data = {
+                    time: startTimeStamp,
+                    joints: jointValueArray
+                }
+                mqtt_client.publish('Robot data', JSON.stringify(data))
             });
         main_loop();
     }, 1000);
 }
-main_loop();
+
+mqtt_client.on('connect', () => {
+    console.log('connected to mqtt broker');
+    main_loop();
+});
+
+mqtt_client.on('error', function (err) {
+    console.log(err);
+    mqtt_client.end();
+})
