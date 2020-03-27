@@ -47,7 +47,7 @@ const main_loop = () => {
                 mqtt_client.publish('Robot data', JSON.stringify(data))
             });
         main_loop();
-    }, 1000);
+    }, 10);
 }
 
 mqtt_client.on('connect', () => {
