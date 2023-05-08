@@ -20,6 +20,6 @@
   "homepage": "https://github.com/TommiRajala/AUOH-robot-factory#readme",
   "dependencies": {
     "axios": "^0.21.2",
-    "mqtt": "^3.0.0"
+    "mqtt": "^4.3.7"
   }
 }
